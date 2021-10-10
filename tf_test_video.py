@@ -96,7 +96,8 @@ def single_pose():
     import time
     import numpy as np
 
-    model = hub.load("https://tfhub.dev/google/movenet/singlepose/lightning/4")
+    # model = hub.load("https://tfhub.dev/google/movenet/singlepose/lightning/4")
+    model = hub.load("https://tfhub.dev/google/movenet/singlepose/thunder/4")
     movenet = model.signatures['serving_default']
     input_source = "test1.mp4"
     cap = cv2.VideoCapture(input_source)
@@ -111,7 +112,8 @@ def single_pose():
         image = tf.Variable(cv2_image, name='x')
         image = tf.expand_dims(image, axis=0)
         # Resize and pad the image to keep the aspect ratio and fit the expected size.
-        image = tf.cast(tf.image.resize_with_pad(image, 192, 192), dtype=tf.int32)
+        # image = tf.cast(tf.image.resize_with_pad(image, 192, 192), dtype=tf.int32)
+        image = tf.cast(tf.image.resize_with_pad(image, 256, 256), dtype=tf.int32)
         outputs = movenet(image)
         # Output is a [1, 1, 17, 3] tensor.
         keypoints = outputs['output_0']
